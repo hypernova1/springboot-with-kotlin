@@ -9,10 +9,8 @@ import javax.persistence.OneToMany
 class Account(
         @Id
         @GeneratedValue
-        var id: Long?,
-        var name: String,
+        var id: Long? = null,
+        var name: String = "",
         @OneToMany
-        var posts: List<Post>?
-) {
-    constructor() : this(null, "", null)
-}
+        var posts: MutableList<Post>? = null
+)
