@@ -6,7 +6,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity
-class Post(
+data class Post(
         @Id
         @GeneratedValue
         var id: Long? = null,
