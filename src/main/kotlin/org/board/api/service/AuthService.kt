@@ -2,8 +2,8 @@ package org.board.api.service
 
 import org.board.api.domain.Account
 import org.board.api.dto.AccountDto
-import org.board.api.exception.AccountExistException
-import org.board.api.exception.IdNotFoundException
+import org.board.api.exception.auth.AccountExistException
+import org.board.api.exception.auth.IdNotFoundException
 import org.board.api.repository.AccountRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

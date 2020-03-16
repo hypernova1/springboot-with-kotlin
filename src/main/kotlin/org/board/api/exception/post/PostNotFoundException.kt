@@ -1,4 +1,4 @@
-package org.board.api.exception
+package org.board.api.exception.post
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus

@@ -25,7 +25,9 @@ class Application {
         account.name = "sam"
         account.password = "1111"
 
-        accountRepository.save(account)
+        val savedAccount = accountRepository.save(account)
+
+        println("======== ${savedAccount.id} =======")
     }
 }
 

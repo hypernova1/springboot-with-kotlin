@@ -2,7 +2,7 @@ package org.board.api.service
 
 import org.board.api.domain.Post
 import org.board.api.dto.PostDto
-import org.board.api.exception.PostNotFoundException
+import org.board.api.exception.post.PostNotFoundException
 import org.board.api.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest

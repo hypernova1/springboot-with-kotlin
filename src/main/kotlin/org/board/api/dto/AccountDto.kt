@@ -28,4 +28,10 @@ class AccountDto {
             var name: String = ""
     )
 
+    class InfoResponse(
+        var id: Long? = null,
+        var email: String = "",
+        var name: String = ""
+    )
+
 }
