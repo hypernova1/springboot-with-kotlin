@@ -36,4 +36,26 @@ class AccountController(@Valid val accountService: AccountService) {
         return ResponseEntity.ok(result)
     }
 
+    @PutMapping("/{id}")
+    fun modifyUserInfo(
+            @PathVariable id: Long,
+            @Valid @RequestBody request: AccountDto.UpdateRequest): ResponseEntity<AccountDto.UpdateRequest> {
+        accountService.updateInfo(id, request)
+        val account = accountService.findById(id)
+
+        val result: ApiResponse<AccountDto.InfoResponse> = ApiResponse(ResultCode.ACCOUNT_UPDATE_SUCCESS)
+        result.data = account
+
+        return ResponseEntity.ok(request)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteUser(@PathVariable id: Long): ResponseEntity<ApiResponse<Any>> {
+        accountService.delete(id)
+
+        val result: ApiResponse<Any> = ApiResponse(ResultCode.ACCOUNT_DELETE_SUCCESS)
+
+        return ResponseEntity.ok(result)
+    }
+
 }

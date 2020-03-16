@@ -1,6 +1,5 @@
 package org.board.api.service
 
-import org.board.api.domain.Account
 import org.board.api.dto.AccountDto
 import org.board.api.exception.account.AccountListNotFoundException
 import org.board.api.exception.account.AccountNotFoundException
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AccountService(@Autowired val accountRepository: AccountRepository) {
@@ -33,6 +33,22 @@ class AccountService(@Autowired val accountRepository: AccountRepository) {
         result.name = account.name
 
         return result
+    }
+
+    @Transactional
+    fun updateInfo(id: Long, request: AccountDto.UpdateRequest) {
+
+        val account = accountRepository.findById(id)
+                .orElseThrow { AccountNotFoundException("해당하는 계정이 없습니다. id: $id") }
+
+        account.update(request)
+    }
+
+    fun delete(id: Long) {
+        val account = accountRepository.findById(id)
+                .orElseThrow { AccountNotFoundException("해당하는 계정이 없습니다. id: $id") }
+
+        accountRepository.delete(account)
     }
 
 }

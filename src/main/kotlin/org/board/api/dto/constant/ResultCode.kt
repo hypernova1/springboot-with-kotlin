@@ -7,6 +7,8 @@ enum class ResultCode(val resultCode: String, val message: String) {
     ACCOUNT_RESISTER_SUCCESS("003", "가입이 완료되었습니다."),
     LOGIN_SUCCESS("004", "로그인을 성공하였습니다."),
     ACCOUNT_LIST_SEARCH_SUCCESS("005", "유저 리스트 조회가 완료되었습니다."),
-    ACCOUNT_SEARCH_SUCCESS("006", "유저 정보 조회가 완료되었습니다.")
+    ACCOUNT_SEARCH_SUCCESS("006", "유저 정보 조회가 완료되었습니다."),
+    ACCOUNT_UPDATE_SUCCESS("007", "유저 정보 변경이 완료되었습니다."),
+    ACCOUNT_DELETE_SUCCESS("008", "유저 삭제가 완료되었습니다.")
 
 }

@@ -22,6 +22,15 @@ class AccountDto {
         var password: String = ""
     }
 
+    class UpdateRequest {
+        @NotBlank(message = "이메일은 필수입니다.")
+        var email: String = ""
+        @NotBlank(message = "이름은 필수입니다.")
+        var name: String = ""
+        @NotEmpty(message = "비밀번호는 필수입니다.")
+        var password: String = ""
+    }
+
     class LoginResponse(
             var id: Long? = null,
             var email: String = "",
@@ -29,9 +38,10 @@ class AccountDto {
     )
 
     class InfoResponse(
-        var id: Long? = null,
-        var email: String = "",
-        var name: String = ""
+            var id: Long? = null,
+            var email: String = "",
+            var name: String = ""
     )
+
 
 }

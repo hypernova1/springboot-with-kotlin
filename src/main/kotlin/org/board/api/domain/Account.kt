@@ -33,4 +33,10 @@ data class Account(
                 return account
         }
 
+        fun update(updateDto: AccountDto.UpdateRequest) {
+                this.email = updateDto.email
+                this.name = updateDto.name
+                this.password = updateDto.password
+        }
+
 }
