@@ -1,5 +1,6 @@
 package org.board.api.domain
 
+import org.board.api.dto.AccountDto
 import javax.persistence.*
 
 @Entity
@@ -13,6 +14,8 @@ data class Account(
 
         var name: String = "",
 
+        var password: String = "",
+
         @OneToMany
         var posts: MutableList<Post>? = null
 ) {
@@ -20,6 +23,14 @@ data class Account(
         fun addPost(post: Post) {
                 post.writer = this
                 posts?.add(post)
+        }
+
+        fun setSignUp(signUpDto: AccountDto.SignUpRequest): Account {
+                val account = Account()
+                this.email = signUpDto.email
+                this.name = signUpDto.name
+                this.password = signUpDto.password
+                return account
         }
 
 }

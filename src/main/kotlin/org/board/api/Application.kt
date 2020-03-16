@@ -23,6 +23,7 @@ class Application {
         val account = Account()
         account.email = "chtlstjd01@naver.com"
         account.name = "sam"
+        account.password = "1111"
 
         accountRepository.save(account)
     }

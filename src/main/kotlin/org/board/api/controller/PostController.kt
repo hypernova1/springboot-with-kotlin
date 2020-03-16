@@ -29,7 +29,8 @@ class PostController(@Autowired val postService: PostService) {
 
         val location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}").buildAndExpand(savedId)
+                .path("/{id}")
+                .buildAndExpand(savedId)
                 .toUri()
 
         return ResponseEntity.created(location).build()

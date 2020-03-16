@@ -1,6 +1,6 @@
 package org.board.api.controller
 
-import org.board.api.constant.ResultCode
+import org.board.api.dto.constant.ResultCode
 import org.board.api.dto.AccountDto
 import org.board.api.dto.ApiResponse
 import org.board.api.service.AuthService
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import javax.validation.Valid
 
 @RestController
@@ -31,12 +32,32 @@ class AuthController(@Autowired val authService: AuthService) {
         response.data = true
 
         return ResponseEntity.ok(response)
-
     }
 
     @PostMapping("/sign-up")
-    fun signUp(@Valid request: AccountDto.SignUpRequest) {
+    fun signUp(@Valid @RequestBody request: AccountDto.SignUpRequest): ResponseEntity<ApiResponse<Any>> {
+        val savedId = authService.signUp(request)
 
+        val location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedId)
+                .toUri()
+
+        val response: ApiResponse<Any> = ApiResponse(ResultCode.ACCOUNT_RESISTER_SUCCESS)
+
+        return ResponseEntity.created(location).body(response)
+    }
+
+    @PostMapping("/login")
+    fun login(@Valid @RequestBody request: AccountDto.LoginRequest): ResponseEntity<ApiResponse<AccountDto.LoginResponse>> {
+
+        val userInfo = authService.login(request)
+
+        val result: ApiResponse<AccountDto.LoginResponse> = ApiResponse(ResultCode.LOGIN_SUCCESS)
+        result.data = userInfo
+
+        return ResponseEntity.ok(result)
     }
 
 }

@@ -2,14 +2,13 @@ package org.board.api.service
 
 import org.board.api.domain.Post
 import org.board.api.dto.PostDto
-import org.board.api.exception.NotFoundException
+import org.board.api.exception.PostNotFoundException
 import org.board.api.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.IllegalArgumentException
 
 @Service
 class PostService(@Autowired val postRepository: PostRepository) {
@@ -18,7 +17,7 @@ class PostService(@Autowired val postRepository: PostRepository) {
             = postRepository.findAll(PageRequest.of(page - 1, size, Sort.Direction.DESC, "id"));
 
     fun findById(id: Long): Post = postRepository.findById(id)
-            .orElseThrow{ NotFoundException("post not found -> id: $id") }
+            .orElseThrow{ PostNotFoundException("게시글을 찾을 수 없습니다. -> id: $id") }
 
     fun save(request: PostDto.RegisterRequest): Long? {
 
@@ -34,7 +33,7 @@ class PostService(@Autowired val postRepository: PostRepository) {
     @Transactional
     fun update(id: Long, request: PostDto.UpdateRequest) {
         val post = postRepository.findById(id)
-                .orElseThrow { NotFoundException("post not found -> id: $id") }
+                .orElseThrow { PostNotFoundException("게시글을 찾을 수 없습니다. -> id: $id") }
 
         post.title = request.title
         post.content = request.content

@@ -1,6 +1,6 @@
 package org.board.api.dto
 
-import org.board.api.constant.ResultCode
+import org.board.api.dto.constant.ResultCode
 
 class ApiResponse<T>(resultCodeEnum: ResultCode) {
     val resultCode: String = resultCodeEnum.resultCode
