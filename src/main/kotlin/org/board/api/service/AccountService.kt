@@ -27,12 +27,7 @@ class AccountService(@Autowired val accountRepository: AccountRepository) {
         val account = accountRepository.findById(id)
                 .orElseThrow { AccountNotFoundException("해당하는 계정이 없습니다. id: $id") }
 
-        val result = AccountDto.InfoResponse()
-        result.id = account.id
-        result.email = account.email
-        result.name = account.name
-
-        return result
+        return AccountDto.InfoResponse(account.id, account.email, account.name)
     }
 
     @Transactional

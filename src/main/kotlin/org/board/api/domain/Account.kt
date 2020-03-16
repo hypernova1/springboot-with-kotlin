@@ -1,28 +1,40 @@
 package org.board.api.domain
 
+import org.board.api.domain.audit.DateAudit
 import org.board.api.dto.AccountDto
 import javax.persistence.*
 
 @Entity
-data class Account(
+class Account : DateAudit() {
+
         @Id
         @GeneratedValue
-        var id: Long? = null,
+        val id: Long = -1
 
         @Column(unique = true)
-        var email: String = "",
+        var email: String = ""
 
-        var name: String = "",
+        var name: String = ""
 
-        var password: String = "",
+        var password: String = ""
 
         @OneToMany
-        var posts: MutableList<Post>? = null
-) {
+        private val _posts = mutableListOf<Post>()
+
+        val posts get() = _posts.toList()
+
+        @OneToMany
+        private val _comments = mutableListOf<Comment>()
+        val comments get() = _comments.toList()
 
         fun addPost(post: Post) {
                 post.writer = this
-                posts?.add(post)
+                _posts.add(post)
+        }
+
+        fun addComment(comment: Comment) {
+                comment.writer = this
+                _comments.add(comment)
         }
 
         fun setSignUp(signUpDto: AccountDto.SignUpRequest): Account {
@@ -37,6 +49,17 @@ data class Account(
                 this.email = updateDto.email
                 this.name = updateDto.name
                 this.password = updateDto.password
+        }
+
+        companion object {
+                fun getDto(account: Account): AccountDto.InfoResponse {
+                        val result = AccountDto.InfoResponse()
+                        result.id = account.id
+                        result.name = account.name
+                        result.email = account.email
+
+                        return result
+                }
         }
 
 }

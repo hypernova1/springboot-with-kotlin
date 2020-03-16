@@ -37,7 +37,7 @@ internal class PostControllerTest(
 
     @Test
     fun getPost() {
-        mockMvc.perform(get("/post/1"))
+        mockMvc.perform(get("/post/2"))
                 .andDo(print())
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$").isNotEmpty)

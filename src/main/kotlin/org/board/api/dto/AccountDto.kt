@@ -32,13 +32,13 @@ class AccountDto {
     }
 
     class LoginResponse(
-            var id: Long? = null,
+            var id: Long = 0,
             var email: String = "",
             var name: String = ""
     )
 
     class InfoResponse(
-            var id: Long? = null,
+            var id: Long = 0,
             var email: String = "",
             var name: String = ""
     )

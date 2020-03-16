@@ -27,13 +27,7 @@ class AuthService(@Autowired val accountRepository: AccountRepository) {
         val account = accountRepository.findByEmailAndPassword(request.email, request.password)
                 .orElseThrow { IdNotFoundException("잘못된 정보입니다. email: ${request.email}") }
 
-        val result = AccountDto.LoginResponse()
-        result.id = account.id
-        result.email = account.email
-        result.name = account.name
-
-        return result
+        return AccountDto.LoginResponse(account.id, account.email, account.name)
     }
-
 
 }

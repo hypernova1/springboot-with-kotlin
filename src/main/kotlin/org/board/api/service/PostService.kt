@@ -9,15 +9,27 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.stream.Collectors
 
 @Service
 class PostService(@Autowired val postRepository: PostRepository) {
 
-    fun findAll(page: Int, size: Int)
-            = postRepository.findAll(PageRequest.of(page - 1, size, Sort.Direction.DESC, "id"));
+    fun findAll(page: Int, size: Int): MutableList<PostDto.Response>? {
+        val posts = postRepository.findAll(PageRequest.of(page - 1, size, Sort.Direction.DESC, "id"))
 
-    fun findById(id: Long): Post = postRepository.findById(id)
-            .orElseThrow{ PostNotFoundException("게시글을 찾을 수 없습니다. -> id: $id") }
+        return posts.stream()
+                .map { p -> Post.getDto(p) }
+                .collect(Collectors.toList())
+    }
+
+    fun findById(id: Long): PostDto.DetailResponse {
+        val post = postRepository.findById(id)
+                .orElseThrow { PostNotFoundException("게시글을 찾을 수 없습니다. -> id: $id") }
+
+        return Post.getDetailDto(post)
+
+
+    }
 
     fun save(request: PostDto.RegisterRequest): Long? {
 
@@ -41,7 +53,5 @@ class PostService(@Autowired val postRepository: PostRepository) {
 
     @Transactional
     fun delete(id: Long) = postRepository.deleteById(id)
-
-
 
 }
