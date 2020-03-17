@@ -8,5 +8,6 @@ interface AccountRepository : JpaRepository<Account, Long> {
 
     fun countByEmail(email: String): Int
     fun findByEmailAndPassword(email: String, password: String): Optional<Account>
+    fun findByEmail(email: String): Optional<Account>
 
 }

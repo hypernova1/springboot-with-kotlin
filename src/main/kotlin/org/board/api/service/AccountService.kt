@@ -7,11 +7,14 @@ import org.board.api.repository.AccountRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class AccountService(@Autowired val accountRepository: AccountRepository) {
+class AccountService(
+        @Autowired val accountRepository: AccountRepository,
+        @Autowired val passwordEncoder: PasswordEncoder) {
 
     fun findAll(page: Int, size: Int): List<AccountDto.InfoResponse> {
         val userList =
@@ -36,6 +39,7 @@ class AccountService(@Autowired val accountRepository: AccountRepository) {
         val account = accountRepository.findById(id)
                 .orElseThrow { AccountNotFoundException(id) }
 
+        account.password = passwordEncoder.encode(account.password)
         account.update(request)
     }
 

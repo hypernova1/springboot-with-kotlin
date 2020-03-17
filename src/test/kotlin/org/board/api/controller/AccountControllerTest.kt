@@ -2,7 +2,6 @@ package org.board.api.controller
 
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.board.api.domain.Account
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

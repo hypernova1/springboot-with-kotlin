@@ -2,6 +2,9 @@ package org.board.api.domain
 
 import org.board.api.domain.audit.DateAudit
 import org.board.api.dto.AccountDto
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.User
+import java.util.stream.Collectors
 import javax.persistence.*
 
 @Entity
@@ -18,25 +21,29 @@ data class Account(
 
         var password: String = "",
 
-        @OneToMany
-        private val _posts: MutableList<Post> = mutableListOf(),
+        @Enumerated(EnumType.STRING)
+        @OneToMany(cascade = [CascadeType.ALL])
+        var roles: MutableSet<Role> = HashSet(),
 
-        @OneToMany
-        private val _comments: MutableList<Comment> = mutableListOf()
+        @OneToMany(mappedBy = "writer")
+        val posts: MutableList<Post> = mutableListOf()
+
 
 ) : DateAudit() {
 
-        val posts get() = _posts.toList()
-        val comments get() = _comments.toList()
-
         fun addPost(post: Post) {
                 post.writer = this
-                _posts.add(post)
+                posts.add(post)
         }
 
-        fun addComment(comment: Comment) {
-                comment.writer = this
-                _comments.add(comment)
+        fun getAutorities(): User {
+
+                val autorities = this.roles
+                        .stream()
+                        .map { role -> SimpleGrantedAuthority("ROLE_$role") }
+                        .collect(Collectors.toSet())
+
+                return User(this.email, this.password, autorities)
         }
 
         fun setSignUp(signUpDto: AccountDto.SignUpRequest): Account {

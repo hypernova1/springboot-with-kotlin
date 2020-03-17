@@ -55,7 +55,7 @@ class PostDto {
             result.createdDate = post.createdDate
             result.commentList = post.comments
                     .stream()
-                    .map { p -> CommentDto.Response(p.id, p.content, p.writer.name, p.createdDate) }
+                    .map { p -> CommentDto.Response(p.id, p.content, p.writer, p.createdDate) }
                     .collect(Collectors.toList())
 
             return result

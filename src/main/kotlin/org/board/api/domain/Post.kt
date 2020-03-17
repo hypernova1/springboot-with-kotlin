@@ -1,9 +1,6 @@
 package org.board.api.domain
 
 import org.board.api.domain.audit.DateAudit
-import org.board.api.dto.CommentDto
-import org.board.api.dto.PostDto
-import java.util.stream.Collectors
 import javax.persistence.*
 
 @Entity
@@ -19,18 +16,16 @@ class Post(
         var content: String = "",
 
         @ManyToOne(cascade = [CascadeType.ALL])
-        var writer: Account = Account(),
-
-        @OneToMany
-        private val _comments: MutableList<Comment> = mutableListOf()
+        var writer: Account = Account()
 
 ) : DateAudit() {
 
-        val comments get() = _comments.toList()
+        @OneToMany(mappedBy = "post", cascade = [CascadeType.REMOVE])
+        val comments: MutableList<Comment> = mutableListOf()
 
         fun addComment(comment: Comment) {
                 comment.post = this
-                _comments.add(comment)
+                comments.add(comment)
         }
 
 }
