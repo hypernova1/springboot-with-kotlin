@@ -4,17 +4,19 @@ import org.board.api.domain.audit.DateAudit
 import javax.persistence.*
 
 @Entity
-class Comment : DateAudit() {
+data class Comment(
+
         @Id
         @GeneratedValue
-        val id: Long = -1
+        val id: Long = -1,
 
         @Lob
-        var content: String = ""
+        var content: String = "",
 
         @ManyToOne
-        var writer: Account = Account()
+        var writer: Account = Account(),
 
         @ManyToOne
         var post: Post = Post()
-}
+
+) : DateAudit()

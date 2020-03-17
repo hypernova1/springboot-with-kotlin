@@ -25,7 +25,7 @@ class AccountService(@Autowired val accountRepository: AccountRepository) {
     fun findById(id: Long): AccountDto.InfoResponse {
 
         val account = accountRepository.findById(id)
-                .orElseThrow { AccountNotFoundException("해당하는 계정이 없습니다. id: $id") }
+                .orElseThrow { AccountNotFoundException(id) }
 
         return AccountDto.InfoResponse(account.id, account.email, account.name)
     }
@@ -34,14 +34,14 @@ class AccountService(@Autowired val accountRepository: AccountRepository) {
     fun updateInfo(id: Long, request: AccountDto.UpdateRequest) {
 
         val account = accountRepository.findById(id)
-                .orElseThrow { AccountNotFoundException("해당하는 계정이 없습니다. id: $id") }
+                .orElseThrow { AccountNotFoundException(id) }
 
         account.update(request)
     }
 
     fun delete(id: Long) {
         val account = accountRepository.findById(id)
-                .orElseThrow { AccountNotFoundException("해당하는 계정이 없습니다. id: $id") }
+                .orElseThrow { AccountNotFoundException(id) }
 
         accountRepository.delete(account)
     }

@@ -5,26 +5,28 @@ import org.board.api.dto.AccountDto
 import javax.persistence.*
 
 @Entity
-class Account : DateAudit() {
+data class Account(
 
         @Id
         @GeneratedValue
-        val id: Long = -1
+        val id: Long = -1,
 
         @Column(unique = true)
-        var email: String = ""
+        var email: String = "",
 
-        var name: String = ""
+        var name: String = "",
 
-        var password: String = ""
+        var password: String = "",
 
         @OneToMany
-        private val _posts = mutableListOf<Post>()
+        private val _posts: MutableList<Post> = mutableListOf(),
+
+        @OneToMany
+        private val _comments: MutableList<Comment> = mutableListOf()
+
+) : DateAudit() {
 
         val posts get() = _posts.toList()
-
-        @OneToMany
-        private val _comments = mutableListOf<Comment>()
         val comments get() = _comments.toList()
 
         fun addPost(post: Post) {

@@ -19,7 +19,7 @@ class AccountController(@Valid val accountService: AccountService) {
 
         val accountList = accountService.findAll(page, size)
 
-        val response: ApiResponse<List<AccountDto.InfoResponse>> = ApiResponse(ResultCode.ACCOUNT_LIST_SEARCH_SUCCESS)
+        val response = ApiResponse<List<AccountDto.InfoResponse>>(ResultCode.ACCOUNT_LIST_SEARCH_SUCCESS)
         response.data = accountList
 
         return ResponseEntity.ok(response)
@@ -30,7 +30,7 @@ class AccountController(@Valid val accountService: AccountService) {
 
         val account = accountService.findById(id)
 
-        val response: ApiResponse<AccountDto.InfoResponse> = ApiResponse(ResultCode.ACCOUNT_SEARCH_SUCCESS)
+        val response = ApiResponse<AccountDto.InfoResponse>(ResultCode.ACCOUNT_SEARCH_SUCCESS)
         response.data = account
 
         return ResponseEntity.ok(response)
@@ -44,7 +44,7 @@ class AccountController(@Valid val accountService: AccountService) {
         accountService.updateInfo(id, request)
         val account = accountService.findById(id)
 
-        val response: ApiResponse<AccountDto.InfoResponse> = ApiResponse(ResultCode.ACCOUNT_UPDATE_SUCCESS)
+        val response = ApiResponse<AccountDto.InfoResponse>(ResultCode.ACCOUNT_UPDATE_SUCCESS)
         response.data = account
 
         return ResponseEntity.ok(response)
@@ -55,7 +55,7 @@ class AccountController(@Valid val accountService: AccountService) {
 
         accountService.delete(id)
 
-        val response: ApiResponse<Any> = ApiResponse(ResultCode.ACCOUNT_DELETE_SUCCESS)
+        val response = ApiResponse<Any>(ResultCode.ACCOUNT_DELETE_SUCCESS)
 
         return ResponseEntity.ok(response)
     }

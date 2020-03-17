@@ -18,17 +18,15 @@ class PostService(@Autowired val postRepository: PostRepository) {
         val posts = postRepository.findAll(PageRequest.of(page - 1, size, Sort.Direction.DESC, "id"))
 
         return posts.stream()
-                .map { p -> Post.getDto(p) }
+                .map { p -> PostDto.getResponse(p) }
                 .collect(Collectors.toList())
     }
 
     fun findById(id: Long): PostDto.DetailResponse {
         val post = postRepository.findById(id)
-                .orElseThrow { PostNotFoundException("게시글을 찾을 수 없습니다. -> id: $id") }
+                .orElseThrow { PostNotFoundException(id) }
 
-        return Post.getDetailDto(post)
-
-
+        return PostDto.getDetailResponse(post)
     }
 
     fun save(request: PostDto.RegisterRequest): Long? {
@@ -45,7 +43,7 @@ class PostService(@Autowired val postRepository: PostRepository) {
     @Transactional
     fun update(id: Long, request: PostDto.UpdateRequest) {
         val post = postRepository.findById(id)
-                .orElseThrow { PostNotFoundException("게시글을 찾을 수 없습니다. -> id: $id") }
+                .orElseThrow { PostNotFoundException(id) }
 
         post.title = request.title
         post.content = request.content

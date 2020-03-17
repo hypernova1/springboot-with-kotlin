@@ -44,7 +44,7 @@ class AuthController(@Autowired val authService: AuthService) {
                 .buildAndExpand(savedId)
                 .toUri()
 
-        val response: ApiResponse<Any> = ApiResponse(ResultCode.ACCOUNT_RESISTER_SUCCESS)
+        val response = ApiResponse<Any>(ResultCode.ACCOUNT_RESISTER_SUCCESS)
 
         return ResponseEntity.created(location).body(response)
     }
@@ -54,7 +54,7 @@ class AuthController(@Autowired val authService: AuthService) {
 
         val userInfo = authService.login(request)
 
-        val result: ApiResponse<AccountDto.LoginResponse> = ApiResponse(ResultCode.LOGIN_SUCCESS)
+        val result = ApiResponse<AccountDto.LoginResponse>(ResultCode.LOGIN_SUCCESS)
         result.data = userInfo
 
         return ResponseEntity.ok(result)
