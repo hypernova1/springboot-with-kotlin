@@ -1,8 +1,6 @@
 package org.board.api.domain
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
 data class Role(
@@ -10,5 +8,6 @@ data class Role(
         @GeneratedValue
         val id: Long = -1,
 
-        val name: RoleName = RoleName.USER
+        @Enumerated(EnumType.STRING)
+        var name: RoleName = RoleName.USER
 )

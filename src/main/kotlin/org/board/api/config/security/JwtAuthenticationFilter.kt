@@ -1,6 +1,5 @@
 package org.board.api.config.security
 
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -11,14 +10,13 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JwtAuthencationFilter(
-        @Autowired
-        private val jwtTokenProvider: JwtTokenProvider,
-        @Autowired
-        private val userDetailService: CustomUserDetailService
-) : OncePerRequestFilter() {
+class JwtAuthenticationFilter : OncePerRequestFilter() {
 
-    val logger = LoggerFactory.getLogger(this.javaClass)
+    @Autowired
+    private lateinit var jwtTokenProvider: JwtTokenProvider
+    @Autowired
+    private lateinit var userDetailService: CustomUserDetailService
+
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
 
         try {
@@ -35,6 +33,7 @@ class JwtAuthencationFilter(
                 SecurityContextHolder.getContext().authentication = authentication
             }
         } catch (e: Exception) {
+            logger.error("Could not set user authentication in security context, $e")
         }
         filterChain.doFilter(request, response)
     }

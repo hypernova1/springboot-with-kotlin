@@ -24,6 +24,6 @@ logging:
     org.hibernate.type: trace
 
 
-app:
-  jwtSecret: MorgothIsMelchor
-  jwtExpirationInMs: 6048000
+jwt:
+  secret: MorgothIsMelchor
+  expirationInMs: 6048000

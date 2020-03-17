@@ -13,26 +13,27 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.HashMap
 
 @Component
-object JwtTokenProvider {
+class JwtTokenProvider(
+        @Value("\${jwt.secret")
+        private var jwtSecret: String? = null,
+
+        @Value("\${jwt.expirationInMs}")
+        private var jwtExpirationInMs: Long = 0
+) {
 
     private val logger = LoggerFactory.getLogger(JwtTokenProvider::class.java.name)
 
-    @Value("\${app.jwtSecret}")
-    private var jwtSecret: String? = null
 
-    @Value("\${app.jwtExpirationInMs}")
-    private var jwtExpirationInMs: Long = 0
-
-    fun UserPrincipal.createJwt(): String {
+    fun generateToken(authentication: Authentication): String {
 
         val claims = HashMap<String, Any>()
-        claims["roles"] = this.authorities
+        claims["roles"] = authentication.authorities
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(this.email)
+                .setSubject(authentication.name)
                 .setExpiration(Date(Date().time + TimeUnit.HOURS.toMillis(jwtExpirationInMs)))
-                .signWith(SignatureAlgorithm.ES256, jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact()
     }
 
@@ -45,9 +46,10 @@ object JwtTokenProvider {
 
         val username: String = tokenBody.subject
 
+        @Suppress("UNCHECKED_CAST")
         val roles = tokenBody["roles"] as List<String>
 
-        val res = roles.mapTo(LinkedList<GrantedAuthority>()) { SimpleGrantedAuthority(it)}
+        val res = roles.mapTo(LinkedList<GrantedAuthority>()) { SimpleGrantedAuthority(it) }
 
         logger.info("$username logged in with authorities $res")
         return UsernamePasswordAuthenticationToken(username, null, res)

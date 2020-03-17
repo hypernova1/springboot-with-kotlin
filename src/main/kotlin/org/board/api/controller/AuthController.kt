@@ -3,6 +3,7 @@ package org.board.api.controller
 import org.board.api.dto.constant.ResultCode
 import org.board.api.dto.AccountDto
 import org.board.api.dto.ApiResponse
+import org.board.api.dto.JwtAuthenticationResponse
 import org.board.api.service.AuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -50,12 +51,12 @@ class AuthController(@Autowired val authService: AuthService) {
     }
 
     @PostMapping("/login")
-    fun login(@Valid @RequestBody request: AccountDto.LoginRequest): ResponseEntity<ApiResponse<AccountDto.LoginResponse>> {
+    fun login(@Valid @RequestBody request: AccountDto.LoginRequest): ResponseEntity<ApiResponse<JwtAuthenticationResponse>> {
 
-        val userInfo = authService.login(request)
+        val token = authService.login(request)
 
-        val result = ApiResponse<AccountDto.LoginResponse>(ResultCode.LOGIN_SUCCESS)
-        result.data = userInfo
+        val result = ApiResponse<JwtAuthenticationResponse>(ResultCode.LOGIN_SUCCESS)
+        result.data = JwtAuthenticationResponse(token)
 
         return ResponseEntity.ok(result)
     }
