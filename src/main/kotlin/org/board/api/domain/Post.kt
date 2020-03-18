@@ -6,10 +6,6 @@ import javax.persistence.*
 @Entity
 class Post(
 
-        @Id
-        @GeneratedValue
-        val id: Long = -1,
-
         var title: String = "",
 
         @Lob

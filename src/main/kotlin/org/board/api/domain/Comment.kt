@@ -6,10 +6,6 @@ import javax.persistence.*
 @Entity
 data class Comment(
 
-        @Id
-        @GeneratedValue
-        val id: Long = -1,
-
         @Lob
         var content: String = "",
 

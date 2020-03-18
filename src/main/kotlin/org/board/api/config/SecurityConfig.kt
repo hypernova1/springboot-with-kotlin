@@ -5,6 +5,7 @@ import org.board.api.config.security.JwtAuthenticationEntryPoint
 import org.board.api.config.security.JwtAuthenticationFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -50,7 +51,6 @@ class SecurityConfig(
                 .passwordEncoder(passwordEncoder())
     }
 
-
     @Bean
     fun corsConfiguration(): CorsConfiguration {
         val configuration = CorsConfiguration()
@@ -88,6 +88,8 @@ class SecurityConfig(
                             "/**/*.js")
                         .permitAll()
                 .antMatchers("/auth/**", "/comment/**")
+                    .permitAll()
+                .antMatchers("/post/**", "/comment/**", "/category/**")
                     .permitAll()
                 .anyRequest()
                     .authenticated()

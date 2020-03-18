@@ -10,10 +10,6 @@ import javax.persistence.*
 @Entity
 data class Account(
 
-        @Id
-        @GeneratedValue
-        val id: Long = -1,
-
         @Column(unique = true)
         var email: String = "",
 
