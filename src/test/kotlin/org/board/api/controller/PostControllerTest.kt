@@ -24,8 +24,6 @@ internal class PostControllerTest(
         @Autowired
         val postRepository: PostRepository,
         @Autowired
-        val accountRepository: AccountRepository,
-        @Autowired
         val categoryRepository: CategoryRepository
 ) {
 
@@ -69,9 +67,12 @@ internal class PostControllerTest(
     @Test
     fun updatePost() {
 
+        val category = categoryRepository.findAll()[0]
+
         val post = Post()
         post.title = "title"
         post.content = "content"
+        post.category = category
 
         val postId = postRepository.save(post).id
 
@@ -89,9 +90,12 @@ internal class PostControllerTest(
     @Test
     fun deletePost() {
 
+        val category = categoryRepository.findAll()[0]
+
         val post = Post()
         post.title = "title"
         post.content = "content"
+        post.category = category
 
         val postId = postRepository.save(post).id
 

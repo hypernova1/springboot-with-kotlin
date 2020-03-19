@@ -60,9 +60,7 @@ class PostController(
     }
 
     @PutMapping("/{id}")
-    fun modifyPost(
-            @PathVariable categoryPath: String,
-            @PathVariable id: Long,
+    fun modifyPost(@PathVariable id: Long,
                    @RequestBody request: PostDto.UpdateRequest): ResponseEntity<ApiResponse<PostDto.DetailResponse>> {
         postService.update(id, request)
 
@@ -74,10 +72,8 @@ class PostController(
         return ResponseEntity.ok(response)
     }
 
-    @DeleteMapping("/{categoryPath}/{id}")
-    fun deletePost(
-            @PathVariable categoryPath: String,
-            @PathVariable id: Long): ResponseEntity<Any> {
+    @DeleteMapping("/{id}")
+    fun deletePost(@PathVariable id: Long): ResponseEntity<Any> {
         postService.delete(id)
 
         val response = ApiResponse<Any>(ResultCode.POST_DELETE_SUCCESS)

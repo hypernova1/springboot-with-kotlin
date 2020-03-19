@@ -63,16 +63,12 @@ class Application {
     }
 
     @Bean
-    fun applicationLister(
-            categoryRepository: CategoryRepository,
-            postRepository: PostRepository
-    ): ApplicationListener<ContextClosedEvent> {
-        return ApplicationListener {
+    fun destroy(categoryRepository: CategoryRepository, postRepository: PostRepository) =
+        ApplicationListener<ContextClosedEvent> {
             postRepository.deleteAll()
             categoryRepository.deleteAll()
             println("application end")
         }
-    }
 
 }
 
