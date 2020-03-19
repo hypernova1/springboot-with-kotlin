@@ -1,8 +1,10 @@
 package org.board.api.service
 
+import org.board.api.domain.Category
 import org.board.api.domain.Post
 import org.board.api.dto.PostDto
 import org.board.api.exception.post.PostNotFoundException
+import org.board.api.repository.CategoryRepository
 import org.board.api.repository.PostRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -14,8 +16,10 @@ import java.util.stream.Collectors
 @Service
 class PostService(@Autowired val postRepository: PostRepository) {
 
-    fun findAll(page: Int, size: Int): MutableList<PostDto.Response>? {
-        val posts = postRepository.findAll(PageRequest.of(page - 1, size, Sort.Direction.DESC, "id"))
+    fun findAll(category: Category, page: Int, size: Int): MutableList<PostDto.Response>? {
+
+        val posts = postRepository
+                .findByCategory(category, PageRequest.of(page - 1, size, Sort.Direction.DESC, "id"))
 
         return posts.stream()
                 .map { p -> PostDto.getResponse(p) }

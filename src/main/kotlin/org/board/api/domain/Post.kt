@@ -16,6 +16,9 @@ class Post(
 
 ) : DateAudit() {
 
+        @ManyToOne
+        var category = Category()
+
         @OneToMany(mappedBy = "post", cascade = [CascadeType.REMOVE])
         val comments: MutableList<Comment> = mutableListOf()
 

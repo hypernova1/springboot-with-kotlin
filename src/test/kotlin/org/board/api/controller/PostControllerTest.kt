@@ -1,6 +1,8 @@
 package org.board.api.controller
 
 import org.board.api.domain.Post
+import org.board.api.repository.AccountRepository
+import org.board.api.repository.CategoryRepository
 import org.board.api.repository.PostRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -20,7 +22,12 @@ internal class PostControllerTest(
         @Autowired
         val mockMvc: MockMvc,
         @Autowired
-        val postRepository: PostRepository) {
+        val postRepository: PostRepository,
+        @Autowired
+        val accountRepository: AccountRepository,
+        @Autowired
+        val categoryRepository: CategoryRepository
+) {
 
     @AfterEach
     fun deleteAll() {
@@ -29,7 +36,7 @@ internal class PostControllerTest(
 
     @Test
     fun getPosts() {
-        mockMvc.perform(get("/post"))
+        mockMvc.perform(get("/post/java"))
                 .andDo(print())
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$").isNotEmpty)
@@ -37,7 +44,10 @@ internal class PostControllerTest(
 
     @Test
     fun getPost() {
-        mockMvc.perform(get("/post/2"))
+
+        val post = postRepository.findAll()[0]
+
+        mockMvc.perform(get("/post/java/${post.id}"))
                 .andDo(print())
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$").isNotEmpty)

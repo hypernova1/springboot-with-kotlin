@@ -3,6 +3,7 @@ package org.board.api.controller
 import org.board.api.dto.ApiResponse
 import org.board.api.dto.PostDto
 import org.board.api.dto.constant.ResultCode
+import org.board.api.service.CategoryService
 import org.board.api.service.PostService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -11,13 +12,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 @RestController
 @RequestMapping("/post")
-class PostController(@Autowired val postService: PostService) {
+class PostController(
+        @Autowired val postService: PostService,
+        @Autowired val categoryService: CategoryService
+) {
 
-    @GetMapping
-    fun getPost(@RequestParam(defaultValue = "1") page: Int,
-                @RequestParam (defaultValue = "10") size: Int): ResponseEntity<ApiResponse<MutableList<PostDto.Response>>> {
+    @GetMapping("/{categoryPath}")
+    fun getPost(
+            @PathVariable categoryPath: String,
+            @RequestParam(defaultValue = "1") page: Int,
+            @RequestParam (defaultValue = "10") size: Int): ResponseEntity<ApiResponse<MutableList<PostDto.Response>>> {
 
-        val posts = postService.findAll(page, size)
+        val category = categoryService.findByPath(categoryPath)
+        val posts = postService.findAll(category, page, size)
 
         val response = ApiResponse<MutableList<PostDto.Response>>(ResultCode.POST_LIST_SEARCH_SUCCESS)
         response.data = posts
@@ -25,8 +32,10 @@ class PostController(@Autowired val postService: PostService) {
         return ResponseEntity.ok(response)
     }
 
-    @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): ResponseEntity<ApiResponse<PostDto.DetailResponse>> {
+    @GetMapping("/{categoryPath}/{id}")
+    fun findById(
+            @PathVariable categoryPath: String,
+            @PathVariable id: Long): ResponseEntity<ApiResponse<PostDto.DetailResponse>> {
         val post = postService.findById(id)
 
         val response = ApiResponse<PostDto.DetailResponse>(ResultCode.POST_SEARCH_SUCCESS)
@@ -51,7 +60,9 @@ class PostController(@Autowired val postService: PostService) {
     }
 
     @PutMapping("/{id}")
-    fun modifyPost(@PathVariable id: Long,
+    fun modifyPost(
+            @PathVariable categoryPath: String,
+            @PathVariable id: Long,
                    @RequestBody request: PostDto.UpdateRequest): ResponseEntity<ApiResponse<PostDto.DetailResponse>> {
         postService.update(id, request)
 
@@ -63,8 +74,10 @@ class PostController(@Autowired val postService: PostService) {
         return ResponseEntity.ok(response)
     }
 
-    @DeleteMapping("/{id}")
-    fun deletePost(@PathVariable id: Long): ResponseEntity<Any> {
+    @DeleteMapping("/{categoryPath}/{id}")
+    fun deletePost(
+            @PathVariable categoryPath: String,
+            @PathVariable id: Long): ResponseEntity<Any> {
         postService.delete(id)
 
         val response = ApiResponse<Any>(ResultCode.POST_DELETE_SUCCESS)

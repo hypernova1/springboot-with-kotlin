@@ -9,6 +9,10 @@ import javax.validation.constraints.NotEmpty
 class PostDto {
 
     class RegisterRequest {
+
+        @NotEmpty
+        val categoryId: Int = -1
+
         @NotEmpty
         var title: String = ""
 

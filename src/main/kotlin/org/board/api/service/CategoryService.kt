@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service
 @Service
 class CategoryService(@Autowired val categoryRepository: CategoryRepository) {
 
+    fun findByPath(path: String): Category {
+        return categoryRepository.findByPath(path)
+                .orElseThrow { CategoryNotFoundException(path) };
+    }
+
     fun save(request: CategoryDto.Request): Category {
         val category = Category.setInstance(request)
 
